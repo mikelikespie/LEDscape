@@ -22,6 +22,11 @@
       'include_dirs': [
         "am335x/app_loader/include",
       ],
+      'link_settings': {
+        'libraries': [
+          '-lpthread'
+        ]
+      },
       'direct_dependent_settings': {
         'include_dirs': [
           "am335x/app_loader/include",
@@ -42,11 +47,12 @@
         'pasm',
       ],
       'include_dirs': [
-        ".",
+        '.',
+        '<(INTERMEDIATE_DIR)',
       ],
       'direct_dependent_settings': {
         'include_dirs': [
-          ".",
+          '.',
         ],
       },
       'sources': [
@@ -57,9 +63,6 @@
         'ws281x.p',
         '<(INTERMEDIATE_DIR)/ws281x.pi',
         '<(INTERMEDIATE_DIR)/ws281x_bin.h',
-      ],
-      'cflags': [
-        '-std=c99',
       ],
       'rules': [
         {
@@ -91,7 +94,27 @@
         },
       ],
     },
+    {
+      'target_name': 'rgb-test',
+      'type': 'executable',
+      'dependencies': [
+        'ledscape',
+      ],
+      'link_settings': {
+        'libraries': [
+          '-lm'
+        ]
+      },
+      'sources': [
+        'rgb-test.c',
+      ],
+    },
   ],
+  'target_defaults': {
+    'cflags': [
+      '-std=c99',
+    ],
+  },
   'variables': {
     'pasm': '<(PRODUCT_DIR)/<(EXECUTABLE_PREFIX)pasm<(EXECUTABLE_SUFFIX)',
     'preprocess_asm': './preprocess_asm.sh',
