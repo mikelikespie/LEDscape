@@ -9,6 +9,7 @@
 #include <inttypes.h>
 #include <errno.h>
 #include <unistd.h>
+#include <math.h>
 #include "ledscape.h"
 
 static void
@@ -51,19 +52,26 @@ int main (void)
 		{
 			for (unsigned p = 0 ; p < 64 ; p++)
 			{
+				int brightness = (1.0 + sinf(clock() / (float)(CLOCKS_PER_SEC))) * 127;
 				ledscape_set_color(
 					frame,
 					strip,
 					p,
-#if 1
+#if 0
 					((strip % 3) == 0) ? (i) : 0,
 					((strip % 3) == 1) ? (i) : 0,
 					((strip % 3) == 2) ? (i) : 0
+
 #else
-					((strip % 3) == 0) ? 100 : 0,
-					((strip % 3) == 1) ? 100 : 0,
-					((strip % 3) == 2) ? 100 : 0
+					/*
+					(((p/2 + last_time) % 3) == 0) ? brightness : 0,
+					(((p/2 + last_time) % 3) == 1) ? brightness : 0,
+					(((p/2 + last_time) % 3) == 2) ? brightness : 0
+					*/
 #endif
+					brightness,
+					brightness,
+					brightness
 				);
 				//ledscape_set_color(frame, strip, 3*p+1, 0, p+val + 80, 0);
 				//ledscape_set_color(frame, strip, 3*p+2, 0, 0, p+val + 160);

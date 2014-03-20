@@ -46,6 +46,7 @@ LDFLAGS += \
 
 LDLIBS += \
 	-lpthread \
+	-lm \
 
 COMPILE.o = $(CROSS_COMPILE)gcc $(CFLAGS) -c -o $@ $< 
 COMPILE.a = $(CROSS_COMPILE)gcc -c -o $@ $< 
