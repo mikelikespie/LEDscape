@@ -17,7 +17,7 @@
       ],
     },
     {
-      'target_name': 'app_loader',
+      'target_name': 'pruss',
       'type': 'static_library',
       'include_dirs': [
         "am335x/app_loader/include",
@@ -34,7 +34,66 @@
         'am335x/app_loader/interface/prussdrv.c',
       ],
     },
+    {
+      'target_name': 'ledscape',
+      'type': 'static_library',
+      'dependencies': [
+        'pruss',
+        'pasm',
+      ],
+      'include_dirs': [
+        ".",
+      ],
+      'direct_dependent_settings': {
+        'include_dirs': [
+          ".",
+        ],
+      },
+      'sources': [
+        'ledscape.c',
+        'ledscape.h',
+        'pru.c',
+        'pru.h',
+        'ws281x.p',
+        '<(INTERMEDIATE_DIR)/ws281x.pi',
+      ],
+      'cflags': [
+        '-std=c99',
+      ],
+      'rules': [
+        {
+          'rule_name': 'preprocess PRU image',
+          'extension': '.p',
+          'outputs': [
+            '<(INTERMEDIATE_DIR)/<(RULE_INPUT_PATH)i',
+          ],
+          'action': [
+            '<(preprocess_asm)',
+            '<(RULE_INPUT_PATH)',
+            '<@(_outputs)',
+          ],
+        },
+        {
+          'rule_name': 'process PRU image',
+          'extension': '.pi',
+          'outputs': [
+            '<(PRODUCT_DIR)/<(RULE_INPUT_ROOT).bin',
+          ],
+          'action': [
+            '<(pasm)',
+            '-V3',
+            '-b',
+            '<(RULE_INPUT_PATH)',
+            '<(PRODUCT_DIR)/<(RULE_INPUT_ROOT)',
+          ],
+        },
+      ],
+    },
   ],
+  'variables': {
+    'pasm': '<(PRODUCT_DIR)/<(EXECUTABLE_PREFIX)pasm<(EXECUTABLE_SUFFIX)',
+    'preprocess_asm': './preprocess_asm.sh',
+  },
 }
 
 
