@@ -347,6 +347,7 @@ USAGE:
         if( strlen(outfile) > (MAXFILE-5) )
             { Report(0,REP_ERROR,"Outfile name too long"); return(RET_ERROR); }
         i=0;
+		char seen_dot = 0;
         while( outfile[i] )
         {
             if( outfile[i]=='.' )
@@ -354,10 +355,15 @@ USAGE:
                 if( outfile[i+1]=='.' )
                     i++;
                 else
-                    { Report(0,REP_ERROR,"Outfile should be basename only - no '.'"); return(RET_ERROR); }
-            }
+					seen_dot = 1;
+            } else if (outfile[i] == '/') {
+				seen_dot = 0;
+			}
             i++;
         }
+		if (seen_dot) {
+                    { Report(0,REP_ERROR,"Outfile should be basename only - no '.'"); return(RET_ERROR); }
+		}
         strcpy( outbase, outfile );
     }
 
