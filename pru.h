@@ -36,9 +36,9 @@ pru_init(
 extern void
 pru_exec(
 	pru_t * const pru,
-	const char * const program
+	const unsigned int * program_data,
+	size_t program_data_length
 );
-
 
 extern void
 pru_close(

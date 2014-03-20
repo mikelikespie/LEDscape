@@ -56,6 +56,7 @@
         'pru.h',
         'ws281x.p',
         '<(INTERMEDIATE_DIR)/ws281x.pi',
+        '<(INTERMEDIATE_DIR)/ws281x_bin.h',
       ],
       'cflags': [
         '-std=c99',
@@ -65,7 +66,7 @@
           'rule_name': 'preprocess PRU image',
           'extension': '.p',
           'outputs': [
-            '<(INTERMEDIATE_DIR)/<(RULE_INPUT_PATH)i',
+            '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).pi',
           ],
           'action': [
             '<(preprocess_asm)',
@@ -77,14 +78,15 @@
           'rule_name': 'process PRU image',
           'extension': '.pi',
           'outputs': [
-            '<(PRODUCT_DIR)/<(RULE_INPUT_ROOT).bin',
+            '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT)_bin.h',
           ],
           'action': [
             '<(pasm)',
             '-V3',
-            '-b',
+            '-c',
+            '-C<(RULE_INPUT_ROOT)_PRUcode',
             '<(RULE_INPUT_PATH)',
-            '<(PRODUCT_DIR)/<(RULE_INPUT_ROOT)',
+            '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT)',
           ],
         },
       ],
@@ -95,5 +97,6 @@
     'preprocess_asm': './preprocess_asm.sh',
   },
 }
+
 
 

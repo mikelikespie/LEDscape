@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include "ledscape.h"
 #include "pru.h"
+#include "ws281x_bin.h"
 
 
 /** GPIO pins used by the LEDscape.
@@ -167,7 +168,7 @@ ledscape_init(
 		pru_gpio(3, gpios3[i], 1, 0);
 
 	// Initiate the PRU program
-	pru_exec(pru, "./ws281x.bin");
+	pru_exec(pru, ws281x_PRUcode, sizeof(ws281x_PRUcode));
 
 	// Watch for a done response that indicates a proper startup
 	// \todo timeout if it fails

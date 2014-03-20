@@ -111,7 +111,7 @@ pru_init(
 void
 pru_exec(
 	pru_t * const pru,
-	void * const program_data,
+	const unsigned int * program_data,
 	size_t program_data_length
 )
 {
@@ -126,16 +126,16 @@ pru_exec(
 			pru_ram_id = PRUSS0_PRU1_IRAM;
 			break;
 		default:
-			die("invalid pru id", program);
+			die("invalid pru id");
 	}
 
     // Make sure PRU sub system is first disabled/reset  
-    prussdrv_pru_disable(prunum);
+    prussdrv_pru_disable(pru->pru_num);
     if (prussdrv_pru_write_memory(pru_ram_id, 0,
                               (unsigned int *) program_data, program_data_length) < 0) {
-		die("loading program failed", program);
+		die("loading program failed");
 	}
-    prussdrv_pru_enable(prunum);
+    prussdrv_pru_enable(pru->pru_num);
 }
 
 
