@@ -351,7 +351,7 @@ ledscape_init(
 
 	// Initiate the PRU program
 	pru_exec(pru, ws281x_PRUcode, sizeof(ws281x_PRUcode));
-#endif
+//#endif
 
 	// Watch for a done response that indicates a proper startup
 	// \todo timeout if it fails
