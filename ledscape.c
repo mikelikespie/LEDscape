@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include "ledscape.h"
 #include "pru.h"
+#include "ws281x_bin.h"
 
 #define CONFIG_LED_MATRIX
 
@@ -349,10 +350,7 @@ ledscape_init(
 		pru_gpio(3, gpios3[i], 1, 0);
 
 	// Initiate the PRU program
-#ifdef CONFIG_LED_MATRIX
-	pru_exec(pru, "./matrix.bin");
-#else
-	pru_exec(pru, "./ws281x.bin");
+	pru_exec(pru, ws281x_PRUcode, sizeof(ws281x_PRUcode));
 #endif
 
 	// Watch for a done response that indicates a proper startup
