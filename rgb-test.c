@@ -26,6 +26,9 @@ ledscape_fill_color(
 			ledscape_set_color(frame, strip, i, r, g, b);
 }
 
+unsigned to_v(float v) {
+	return powf(v, 1.3) * 127;
+}
 
 int main (void)
 {
@@ -46,12 +49,12 @@ int main (void)
 		uint16_t r = ((i >>  0) & 0xFF);
 		uint16_t g = ((i >>  8) & 0xFF);
 		uint16_t b = ((i >> 16) & 0xFF);
-		//ledscape_fill_color(frame, num_pixels, val, val, val);
+		ledscape_fill_color(frame, num_pixels, val, val, val);
 
 		unsigned lit_strip = last_time % LEDSCAPE_NUM_STRIPS;
 
 		clock_t clk = clock();
-		for (unsigned strip = 0 ; strip < LEDSCAPE_NUM_STRIPS ; strip++)
+		for (unsigned strip = 0 ; strip < 32 ; strip++)
 		{
 			for (unsigned p = 0 ; p < num_pixels ; p++)
 			{
@@ -62,12 +65,15 @@ int main (void)
 				int g = lit_strip  == strip ? 127 : ((p + 5 + last_time) % 16) * 8;
 				int b = lit_strip  == strip ? 127 : ((p  + 12 + last_time) % 16) * 8;
 #else
-				int brightness = (1.0 + sinf(clk / (float)(CLOCKS_PER_SEC))) * 64;
+				int brightness = to_v((1.0 + sinf(clk / (CLOCKS_PER_SEC / 24.0) + pos_in_segment / 16.0 * 3.141595 * 2) ) / 2.0);
 
-				int r = segment % 3 == 0 ? brightness : 0;
-				int g = segment % 3 == 1 ? brightness : 0;
-				int b = segment % 3 == 2 ? brightness : 0;
+//				int r = (segment % 3) == (last_time + 0) % 3  ? brightness : 0;
+//				int g = (segment % 3) == (last_time + 1) % 3 ? brightness : 0;
+//				int b = (segment % 3) == (last_time + 2) % 3 ? brightness : 0;
+				int r = brightness, g = brightness, b = brightness;
 #endif
+
+				
 				ledscape_set_color(
 					frame,
 					strip,
