@@ -37,7 +37,7 @@ typedef struct {
  * This makes it easier to clock out while reading from the DDR
  * in a burst mode.
  */
-typedef struct {
+typedef struct ledscape_frame {
 	ledscape_pixel_t strip[LEDSCAPE_NUM_STRIPS];
 } __attribute__((__packed__)) ledscape_frame_t;
 
