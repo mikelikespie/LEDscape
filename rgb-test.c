@@ -27,7 +27,8 @@ ledscape_fill_color(
 }
 
 unsigned to_v(float v) {
-	return powf(v, 1.3) * 127;
+	return powf(v, 1.5) * 127;
+	//return v * 127;
 }
 
 int main (void)
@@ -49,7 +50,7 @@ int main (void)
 		uint16_t r = ((i >>  0) & 0xFF);
 		uint16_t g = ((i >>  8) & 0xFF);
 		uint16_t b = ((i >> 16) & 0xFF);
-		ledscape_fill_color(frame, num_pixels, val, val, val);
+		//ledscape_fill_color(frame, num_pixels, val, val, val);
 
 		unsigned lit_strip = last_time % LEDSCAPE_NUM_STRIPS;
 
@@ -65,7 +66,9 @@ int main (void)
 				int g = lit_strip  == strip ? 127 : ((p + 5 + last_time) % 16) * 8;
 				int b = lit_strip  == strip ? 127 : ((p  + 12 + last_time) % 16) * 8;
 #else
-				int brightness = to_v((1.0 + sinf(clk / (CLOCKS_PER_SEC / 24.0) + pos_in_segment / 16.0 * 3.141595 * 2) ) / 2.0);
+				//int brightness = to_v((1.0 + sinf(clk / (CLOCKS_PER_SEC / 24.0) + pos_in_segment / 16.0 * 3.141595 * 2.0) ) / 2.0);
+
+				int brightness = to_v(1.0 - (pos_in_segment + segment +  (int)(clk / (CLOCKS_PER_SEC / 32.0))) % 16 / 16.0);
 
 //				int r = (segment % 3) == (last_time + 0) % 3  ? brightness : 0;
 //				int g = (segment % 3) == (last_time + 1) % 3 ? brightness : 0;
@@ -99,16 +102,17 @@ int main (void)
 			}
 		}
 
-		// wait for the previous frame to finish;
 		const uint32_t response = ledscape_wait(leds);
+
+		// wait for the previous frame to finish;
 		time_t now = time(NULL);
 		if (now != last_time)
 		{
-			printf("%d fps. starting %d previous %"PRIx32"\n",
-				i - last_i, i, response);
+			//printf("%d fps. starting %d previous %"PRIx32"\n",
+			//	i - last_i, i, response);
 			last_i = i;
 			last_time = now;
-			printf("%ld\n", last_time % LEDSCAPE_NUM_STRIPS);
+			//printf("%ld\n", last_time % LEDSCAPE_NUM_STRIPS);
 		}
 
 		ledscape_draw(leds, frame_num);

@@ -113,6 +113,7 @@
   'target_defaults': {
     'cflags': [
       '-std=c99',
+      '-O3',
     ],
   },
   'variables': {
