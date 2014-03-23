@@ -72,7 +72,7 @@
             '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).pi',
           ],
           'action': [
-            '<(preprocess_asm)',
+            '<@(preprocess_asm)',
             '<(RULE_INPUT_PATH)',
             '<@(_outputs)',
           ],
@@ -117,8 +117,12 @@
   },
   'variables': {
     'pasm': '<(PRODUCT_DIR)/<(EXECUTABLE_PREFIX)pasm<(EXECUTABLE_SUFFIX)',
-    'preprocess_asm': './preprocess_asm.sh',
+    'preprocess_asm': ['python', 'preprocess_asm.py'],
   },
+  'make_global_settings': [
+    ['CXX','/usr/bin/clang++'],
+    ['LINK','/usr/bin/clang++'],
+  ],
 }
 
 

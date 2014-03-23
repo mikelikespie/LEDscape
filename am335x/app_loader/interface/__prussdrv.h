@@ -59,8 +59,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <linux/unistd.h>
-
 #define DISABLE_L3RAM_SUPPORT
 
 #define	PAGE_SIZE                     4096
