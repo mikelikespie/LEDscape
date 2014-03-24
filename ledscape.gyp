@@ -120,6 +120,7 @@
     'preprocess_asm': ['python', 'preprocess_asm.py'],
   },
   'make_global_settings': [
+    ['CC','/usr/bin/clang'],
     ['CXX','/usr/bin/clang++'],
     ['LINK','/usr/bin/clang++'],
   ],
