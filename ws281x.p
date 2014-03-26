@@ -225,6 +225,7 @@ START:
     MOV r2, #0x1
     SBCO r2, CONST_PRUDRAM, 12, 4
 
+
     // Wait for the start condition from the main program to indicate
     // that we have a rendered frame ready to clock out.  This also
     // handles the exit case if an invalid value is written to the start
@@ -234,6 +235,13 @@ _LOOP:
     // length (in bytes-bit words) into r1.
     // start command into r2
     LBCO      data_addr, CONST_PRUDRAM, 0, 12
+
+#ifdef AM33XX
+    // Send notification to Host in case it wants to be interrupt driven
+    MOV R31.b0, PRU0_ARM_INTERRUPT+16
+#else
+    MOV R31.b0, PRU0_ARM_INTERRUPT
+#endif
 
     // Wait for a non-zero command
     QBEQ _LOOP, r2, #0

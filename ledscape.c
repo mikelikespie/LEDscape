@@ -118,6 +118,7 @@ ledscape_wait(
 {
 	while (1)
 	{
+		pru_wait_interrupt(leds->pru);
 		uint32_t response = leds->ws281x->response;
 		if (!response)
 			continue;
